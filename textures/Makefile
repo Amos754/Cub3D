@@ -44,7 +44,7 @@ clean:
 
 fclean: clean
 		@rm -rf $(NAME) $(OBJ)
-		@echo "CUB3D $(R)DELETED$(RS)"
+		@echo "PHILO $(R)DELETED$(RS)"
 
 re: fclean all
 

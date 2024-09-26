@@ -1,10 +1,13 @@
 #include "cub3d.h"
 
+
 void	free_tab(char **tab)
 {
 	int	i;
 
 	i = -1;
+	if (!tab)
+		return ;
 	while (tab[++i])
 		free(tab[i]);
 }
@@ -27,10 +30,7 @@ void	free_cub(t_cub3d *cub3d)
 void	free_pars(t_pars *pars)
 {
 	if (pars->map)
-	{
 		free_tab(pars->map);
-		free(pars->map);
-	}
 	if (pars->path_n)
 		free(pars->path_n);
 	if (pars->path_s)
@@ -46,6 +46,7 @@ int	close_free(t_cub3d *cub3d)
 	mlx_destroy_image(cub3d->mlx_ptr, cub3d->text->text);
 	mlx_destroy_window(cub3d->mlx_ptr, cub3d->mlx_window);
 	free(cub3d->mlx_ptr);
+	free(cub3d->text);
 	free_cub(cub3d);
 	exit(EXIT_SUCCESS);
 	return (0);
@@ -90,8 +91,8 @@ void	init_cub(t_cub3d *cub3d, t_pars *pars)
 
 	i = 0;
 	cub3d->map = pars->map;
-	cub3d->posx = pars->posx;
-	cub3d->posy = pars->posy;
+	cub3d->posx = pars->posx + 0.5;
+	cub3d->posy = pars->posy + 0.5;
 	convert_rgb_hex_floor(cub3d, pars, 0);
 	convert_rgb_hex_floor(cub3d, pars, 1);
 	cub3d->path_n = pars->path_n;
@@ -109,7 +110,7 @@ void	init_cub(t_cub3d *cub3d, t_pars *pars)
 	{
 		cub3d->dirx = 0;
 		cub3d->diry = 1;
-		cub3d->planex = 0.66;
+		cub3d->planex = -0.66;
 		cub3d->planey = 0;
 	}
 	if (pars->orientation == 'E')
@@ -124,38 +125,9 @@ void	init_cub(t_cub3d *cub3d, t_pars *pars)
 		cub3d->dirx = -1;
 		cub3d->diry = 0;
 		cub3d->planex = 0;
-		cub3d->planey = 0.66;
+		cub3d->planey = -0.66;
 	}
 }
-
-// int	key_press(int keysym, t_cub3d *cub3d)
-// {
-// 	if (keysym == W)
-// 		data->rc->move_f = 1;
-// 	if (keysym == S)
-// 		data->rc->move_b = 1;
-// 	if (keysym == L_ARR)
-// 		data->rc->rot_l = 1;
-// 	if (keysym == R_ARR)
-// 		data->rc->rot_r = 1;
-// 	if (keysym == A)
-// 		data->rc->move_l = 1;
-// 	if (keysym == D)
-// 		data->rc->move_r = 1;
-// 	if (keysym == TAB)
-// 		data->rc->mouse = 1;
-// 	if (keysym == SPACE)
-// 		data->rc->shoot = 1;
-// 	if (keysym == ESC)
-// 		free_all(data, NULL, 0);
-// 	return (0);
-// }
-
-// int	cross_escape(t_cub3d *cub3d)
-// {
-// 	//free_all(cub3d, NULL, 0);
-// 	return (0);
-// }
 
 int main(int ac, char **av)
 {
@@ -200,10 +172,20 @@ int main(int ac, char **av)
 	cub3d->stepy = 0;
 	cub3d->hit = 0;
 	cub3d->side = 0;
+
+	cub3d->ch_posx = cub3d->posx;
+	cub3d->ch_posy = cub3d->posy;
+	//ft_begin_image(cub3d);//Image to see first
 	ft_init_window(cub3d);
 	ft_raycast(cub3d);
+	mlx_mouse_move(cub3d->mlx_window, screen_w/2, screen_h/2);
+	mlx_hook(cub3d->mlx_window, 4, keypressmask, &ft_mousepress, cub3d);
+	mlx_hook(cub3d->mlx_window, keypress, keypressmask, &ft_keypress, cub3d);
+	mlx_hook(cub3d->mlx_window, keyrelease, keyreleasemask, &ft_keyrelease, cub3d);
 	mlx_hook(cub3d->mlx_window, 17, 0, close_free, cub3d);
+	mlx_loop_hook(cub3d->mlx_ptr, &ft_render_next_frame_bymove, cub3d);
 	mlx_loop(cub3d->mlx_ptr);
+
 	// cub3d->posx = 10; //player position
 	// cub3d->posy = 12;
 

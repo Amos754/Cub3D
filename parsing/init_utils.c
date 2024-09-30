@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:55:14 by olmarech          #+#    #+#             */
-/*   Updated: 2024/09/26 16:17:07 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:51:12 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int	little_check(char **buff, int i, int k)
 {
+	// printf("K : %d\n\n\n\n", k);
 	if ((buff[i][k] == '1' || buff[i][k] == '0'
 		|| buff[i][k] == 'N' || buff[i][k] == 'S'
 		|| buff[i][k] == 'E' || buff[i][k] == 'W'
-		|| (buff[i][k] == ' ' && k > 0))
-		&& (buff[i][k - 1] >= 9 && buff[i][k - 1] <= 13))
+		|| (buff[i][k] == ' ' && k > 0)) && k > 0)
+			if (buff[i][k - 1] >= 9 && buff[i][k - 1] <= 13)
 		return (1);
 	return (0);
 }
@@ -39,7 +40,6 @@ void	init_file_content(char **buff, char **file_content)
 			if (little_check(buff, i, k))
 			{
 				free_tab(buff);
-				free(buff);
 				msg_exit("Error in file.");
 			}
 		}
@@ -50,6 +50,7 @@ void	init_file_content(char **buff, char **file_content)
 		}
 		i++;
 	}
+	file_content[j] = NULL;
 }
 
 void	init_pars(t_pars *pars)
@@ -70,9 +71,9 @@ void	init_pars(t_pars *pars)
 	pars->path_e = NULL;
 }
 
-void	init_pars_orientation(t_pars *pars, char **file_content, int i, int j)
+void	init_pars_orientation(t_pars *pars, int i, int j)
 {
-	pars->orientation = file_content[i][j];
+	pars->orientation = pars->map[i][j];
 	pars->posx = j;
 	pars->posy = i;
 }

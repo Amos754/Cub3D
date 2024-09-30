@@ -216,6 +216,135 @@ void	ft_gun_point(t_cub3d *cub3d)
 	ft_gun_point_sideways(cub3d);
 }
 
+void ft_draw_orientation_triangle(t_cub3d *data)
+{
+    int line_length = 90;  // You can increase this for a longer triangle
+    double angle_offset = 0.6;  // Adjust this for wider or narrower triangle (in radians)
+
+    // Convert player angle to radians if it's in degrees
+    double angle = data->angle;
+
+    // Calculate the direction for the left and right lines
+    double left_dir_x = cos(angle - angle_offset);
+    double left_dir_y = sin(angle - angle_offset);
+    double right_dir_x = cos(angle + angle_offset);
+    double right_dir_y = sin(angle + angle_offset);
+
+    // Draw the left line by placing pixels from player position outward
+    for (int i = 0; i < line_length; i++) {
+        int left_x = 120 + (int)(left_dir_x * i);
+        int left_y = 120 + (int)(left_dir_y * i);
+        my_mlx_pixel_put(data->text, left_x, left_y, 0xFFFFFF);  // White color for the left line
+    }
+
+    // Draw the right line by placing pixels from player position outward
+    for (int i = 0; i < line_length; i++) {
+        int right_x = 120 + (int)(right_dir_x * i);
+        int right_y = 120 + (int)(right_dir_y * i);
+        my_mlx_pixel_put(data->text, right_x, right_y, 0xFFFFFF);  // White color for the right line
+    }
+}
+
+void	ft_draw_minimap_pixel(t_cub3d *cub3d, int x, int y, int radius, int color)
+{
+	int center_x = 120;
+	int center_y = 120;
+	int dist = sqrt((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y));
+
+	// Only draw pixels inside the circle
+	if (dist <= radius)
+	{
+		my_mlx_pixel_put(cub3d->text, x, y, color);
+		my_mlx_pixel_put(cub3d->text, x + 1, y + 1, color);
+	}
+}
+
+void	ft_draw_minimap(t_cub3d *cub3d, int radius)
+{
+	int	map_x, map_y;
+	int	pixel_x, pixel_y;
+	int scale = 10;  // Adjust scale to fit your map
+	double dist_to_player;
+
+	for (map_y = (int)(cub3d->posy - 4.5); map_y <= (int)(cub3d->posy + 4.5); map_y++)
+	{
+		for (map_x = (int)(cub3d->posx - 4.5); map_x <= (int)(cub3d->posx + 4.5); map_x++)
+		{
+			// Check if the map coordinates are within bounds
+			if (map_x >= 0 && map_x < 33 && map_y >= 0 && map_y < 14)
+			{
+				// Calculate distance to player
+				dist_to_player = sqrt((map_x - cub3d->posx) * (map_x - cub3d->posx) + (map_y - cub3d->posy) * (map_y - cub3d->posy));
+
+				// Only draw if within 4.5 units
+				if (dist_to_player <= 4.5)
+				{
+					// Translate map position to minimap coordinates
+					pixel_x = 120 + (map_x - cub3d->posx) * scale;
+					pixel_y = 120 + (map_y - cub3d->posy) * scale;
+
+					// Draw the map tile inside the circle
+					if (cub3d->map[map_y][map_x] == '1')  // Assuming '1' is a wall in the map
+						ft_draw_minimap_pixel(cub3d, pixel_x, pixel_y, radius, 0x39FF14);  // Wall color
+					else
+						ft_draw_minimap_pixel(cub3d, pixel_x, pixel_y, radius, 0x808080);  // Floor color
+				}
+			}
+		}
+	}
+
+	// Draw the player position
+	ft_draw_minimap_pixel(cub3d, 120, 120, radius, 0xFF0000);  // Red for player
+}
+
+void	ft_draw_circle(t_cub3d *cub3d, int x0, int y0, int radius, int color)
+{
+    int x;
+	int	y;
+	int	d;
+
+    x = 0;
+    y = radius;
+    d = 3 - 2 * radius;
+	my_mlx_pixel_put(cub3d->text, x0 + 1, y0, 0x000080);
+	my_mlx_pixel_put(cub3d->text, x0 - 1, y0, 0x000080);
+	my_mlx_pixel_put(cub3d->text, x0, y0, 0x000080);
+	my_mlx_pixel_put(cub3d->text, x0, y0 + 1, 0x000080);
+	my_mlx_pixel_put(cub3d->text, x0, y0 - 1, 0x000080);
+    while (x++ <= y)
+    {
+        my_mlx_pixel_put(cub3d->text, x0 + x, y0 + y, color);
+        my_mlx_pixel_put(cub3d->text, x0 + y, y0 + x, color);
+        my_mlx_pixel_put(cub3d->text, x0 - x, y0 + y, color);
+        my_mlx_pixel_put(cub3d->text, x0 - y, y0 + x, color);
+        my_mlx_pixel_put(cub3d->text, x0 + x, y0 - y, color);
+        my_mlx_pixel_put(cub3d->text, x0 + y, y0 - x, color);
+        my_mlx_pixel_put(cub3d->text, x0 - x, y0 - y, color);
+        my_mlx_pixel_put(cub3d->text, x0 - y, y0 - x, color);
+
+        if (d < 0)
+            d += 4 * x + 6;
+        else
+        {
+            d += 4 * (x - y) + 10;
+            y--;
+        }
+    }
+}
+
+void	ft_minimap(t_cub3d *cub3d)
+{
+	int radius = 90;  // Same radius as your circle
+
+	// Draw circle outline
+	ft_draw_circle(cub3d, 120, 120, radius, 0x000000);
+
+	// Draw minimap inside the circle
+	ft_draw_minimap(cub3d, radius);
+	mlx_hook(cub3d->mlx_window, 6, 0, &ft_handle_mouse_move, cub3d);
+	ft_draw_orientation_triangle(cub3d);
+}
+
 void	ft_raycast(t_cub3d *cub3d)
 {
 	int		x;
@@ -241,6 +370,7 @@ void	ft_raycast(t_cub3d *cub3d)
 		ft_draw_text(cub3d, x);
 	}
 	ft_gun_point(cub3d);
+	ft_minimap(cub3d);
 	mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->text->text, 0, 0);
 	ft_gun(cub3d);
 }

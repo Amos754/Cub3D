@@ -35,9 +35,6 @@ int	ft_mousepress(int mousecode, int x, int y, t_cub3d *cub3d)
 
 int	ft_keyrelease(int keycode, t_cub3d *cub3d)
 {
-	int	i;
-
-	i = 0;
 	if (keycode == KEY_A)
 		cub3d->keyp.left = 0;
 	else if (keycode == KEY_D)
@@ -145,13 +142,13 @@ int	ft_shoot(t_cub3d *cub3d)
 	if (cub3d->keyp.l_click)
 	{
 		cub3d->gun_text = mlx_xpm_file_to_image(cub3d->mlx_ptr, "textures/gun_shoot1.xpm", &width, &height);
-		mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->gun_text, 380, 360);
+		mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->gun_text, -30, 0);
 		cub3d->keyp.l_click = 0;
 	}
 	else
 	{
 		cub3d->gun_text = mlx_xpm_file_to_image(cub3d->mlx_ptr, "textures/gun_shoot3.xpm", &width, &height);
-		mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->gun_text, 380, 360);
+		mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->gun_text, -30, 0);
 	}
 
 	return (0);

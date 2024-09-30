@@ -10,6 +10,7 @@ void	free_tab(char **tab)
 		return ;
 	while (tab[++i])
 		free(tab[i]);
+	free(tab);
 }
 
 void	free_cub(t_cub3d *cub3d)
@@ -24,6 +25,7 @@ void	free_cub(t_cub3d *cub3d)
 		free(cub3d->path_e);
 	if (cub3d->path_w)
 		free(cub3d->path_w);
+	free(cub3d->text);
 	free(cub3d);
 }
 
@@ -39,6 +41,7 @@ void	free_pars(t_pars *pars)
 		free(pars->path_e);
 	if (pars->path_w)
 		free(pars->path_w);
+	free(pars);
 }
 
 int	close_free(t_cub3d *cub3d)
@@ -46,7 +49,6 @@ int	close_free(t_cub3d *cub3d)
 	mlx_destroy_image(cub3d->mlx_ptr, cub3d->text->text);
 	mlx_destroy_window(cub3d->mlx_ptr, cub3d->mlx_window);
 	free(cub3d->mlx_ptr);
-	free(cub3d->text);
 	free_cub(cub3d);
 	exit(EXIT_SUCCESS);
 	return (0);
@@ -85,20 +87,28 @@ void	convert_rgb_hex_floor(t_cub3d *cub3d, t_pars *pars, int option)
 			| pars->c_rgb[1] << 8 | pars->c_rgb[2]);
 }
 
-void	init_cub(t_cub3d *cub3d, t_pars *pars)
+void	init_map_cub(t_cub3d *cub3d, t_pars *pars)
 {
 	int	i;
 
-	i = 0;
-	cub3d->map = pars->map;
+	i = -1;
+	cub3d->map = malloc(sizeof(char *) * (size_tab(pars->map) + 1));
+	while (pars->map[++i])
+		cub3d->map[i] = ft_strdup(pars->map[i]);
+	cub3d->map[i] = NULL;
+}
+
+void	init_cub(t_cub3d *cub3d, t_pars *pars)
+{
+	init_map_cub(cub3d, pars);
 	cub3d->posx = pars->posx + 0.5;
 	cub3d->posy = pars->posy + 0.5;
 	convert_rgb_hex_floor(cub3d, pars, 0);
 	convert_rgb_hex_floor(cub3d, pars, 1);
-	cub3d->path_n = pars->path_n;
-	cub3d->path_s = pars->path_s;
-	cub3d->path_e = pars->path_e;
-	cub3d->path_w = pars->path_w;
+	cub3d->path_n = ft_strdup(pars->path_n);
+	cub3d->path_s = ft_strdup(pars->path_s);
+	cub3d->path_e = ft_strdup(pars->path_e);
+	cub3d->path_w = ft_strdup(pars->path_w);
 	if (pars->orientation == 'N')
 	{
 		cub3d->dirx = 0;
@@ -132,7 +142,7 @@ void	init_cub(t_cub3d *cub3d, t_pars *pars)
 int main(int ac, char **av)
 {
 	t_cub3d	*cub3d;
-	t_pars	pars;
+	t_pars	*pars;
 	int i;
 
 	if (ac != 2)
@@ -140,6 +150,7 @@ int main(int ac, char **av)
 	if (check_dot_cub(av[1]))
 		msg_exit("Wrong file format.");
 	cub3d = malloc(sizeof(t_cub3d));
+	pars = malloc(sizeof(t_pars));
 	if (!cub3d)
 	{
 		ft_error_str("Error t_cub3d", 12);
@@ -149,8 +160,10 @@ int main(int ac, char **av)
 	while (++i < 4)
 		cub3d->texture[i].text = NULL;
 	// init everything!
-	parsing(&pars, av);
-	init_cub(cub3d, &pars);
+	parsing(pars, av);
+	init_cub(cub3d, pars);
+	free_pars(pars);
+	system("leaks cub3D");
 	cub3d->done = 0;
 	cub3d->wall_dist = 0;
 	cub3d->lower_point = 0;

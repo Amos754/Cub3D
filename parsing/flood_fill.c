@@ -34,7 +34,6 @@ void	print_content(char **file_content)
 				printf("\033[1;31m██\033[0m");
 			else
 				printf("  ");
-			usleep(2500);
 		}
 		printf("\n");
 	}

@@ -12,8 +12,8 @@
 
 # include "./minilibx/mlx.h"
 
-# define screen_h 		1080
-# define screen_w 		1920
+# define screen_h 		720
+# define screen_w 		1280
 # define texture_w		64
 # define texture_h 		64
 
@@ -29,6 +29,7 @@
 # define ARROW_R		124
 # define MOUSE			46
 # define LEFTCLICK		49
+# define MOUSE_S		0.0027
 
 //MLX events
 # define keypress		2
@@ -86,7 +87,7 @@ typedef struct s_cub3d
 	t_time		time;
 
 	char	**map;
-
+	double	angle;
 	double	ch_posx;//changed positions
 	double	ch_posy;
 
@@ -197,7 +198,7 @@ int		ft_mousepress(int mousecode, int x, int y, t_cub3d *cub3d);
 void	check_map(char **map);
 void	msg_exit(char *error);
 void	init_file_content(char **buff, char **file_content);
-void	init_pars_orientation(t_pars *pars, char **file_content, int i, int j);
+void	init_pars_orientation(t_pars *pars, int i, int j);
 void	init_pars(t_pars *pars);
 void	init_rgb(t_pars *pars, char **tmp, int option, char **file_content);
 int		size_tab(char **tab);
@@ -205,5 +206,6 @@ void	free_exit(t_pars *pars, char **file_content, char *error_msg, int op);
 void	free_tmp_exit(t_pars *pars, char **file, char *error_msg, char **t);
 int		check_duplicate(char **file_content, int i, t_pars *pars);
 int		good_size(char **buff);
+int		ft_handle_mouse_move(int x, int y, t_cub3d *cub3d);
 
 #endif

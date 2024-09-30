@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:16:00 by olmarech          #+#    #+#             */
-/*   Updated: 2024/09/26 16:12:16 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:46:51 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	free_exit(t_pars *pars, char **file_content, char *error_msg, int op)
 void	free_tmp_exit(t_pars *pars, char **file, char *error_msg, char **t)
 {
 	free_tab(t);
-	free(t);
 	free_exit(pars, file, error_msg, 1);
 }
 

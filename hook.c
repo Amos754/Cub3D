@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 18:36:50 by olmarech          #+#    #+#             */
-/*   Updated: 2024/10/01 18:51:52 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:33:01 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,14 @@ int	shoot_utils(t_cub3d *cub3d, int i)
 	if (i == 1)
 		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s1.xpm", &w, &h);
 	else if (i == 2)
-		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s2.xpm", &w, &h);
+		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s1.xpm", &w, &h);
 	else if (i == 3)
+		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s2.xpm", &w, &h);
+	else if (i == 4)
+		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s2.xpm", &w, &h);
+	else if (i == 5)
+		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s3.xpm", &w, &h);
+	else if (i == 6)
 		cub3d->g_t = mlx_xpm_file_to_image(cub3d->mptr, "texts/s3.xpm", &w, &h);
 	return (i + 1);
 }

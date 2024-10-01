@@ -216,7 +216,7 @@ void	ft_gun_point(t_cub3d *cub3d)
 	ft_gun_point_sideways(cub3d);
 }
 
-void ft_draw_orientation_triangle(t_cub3d *data)
+void ft_draw_orientation_triangle(t_cub3d *data) 
 {
     int line_length = 90;  // You can increase this for a longer triangle
     double angle_offset = 0.6;  // Adjust this for wider or narrower triangle (in radians)
@@ -271,11 +271,11 @@ void	ft_draw_minimap(t_cub3d *cub3d, int radius)
 		for (map_x = (int)(cub3d->posx - 4.5); map_x <= (int)(cub3d->posx + 4.5); map_x++)
 		{
 			// Check if the map coordinates are within bounds
-			if (map_x >= 0 && map_x < 33 && map_y >= 0 && map_y < 14)
+			if (map_x >= 0 && map_x < cub3d->width && map_y >= 0 && map_y < cub3d->height)
 			{
 				// Calculate distance to player
 				dist_to_player = sqrt((map_x - cub3d->posx) * (map_x - cub3d->posx) + (map_y - cub3d->posy) * (map_y - cub3d->posy));
-
+				
 				// Only draw if within 4.5 units
 				if (dist_to_player <= 4.5)
 				{
@@ -338,7 +338,7 @@ void	ft_minimap(t_cub3d *cub3d)
 
 	// Draw circle outline
 	ft_draw_circle(cub3d, 120, 120, radius, 0x000000);
-
+	
 	// Draw minimap inside the circle
 	ft_draw_minimap(cub3d, radius);
 	mlx_hook(cub3d->mlx_window, 6, 0, &ft_handle_mouse_move, cub3d);
@@ -352,7 +352,7 @@ void	ft_raycast(t_cub3d *cub3d)
 					   right side being -1, center 0 and left side 1.
 					   This will ease the ray vector calculation!*/
 	x = 0;
-	cub3d->text->text = mlx_new_image(cub3d->mlx_ptr, screen_w, screen_h);
+	cub3d->text->text = mlx_new_image(cub3d->mptr, screen_w, screen_h);
 	if (!cub3d->text->text)
 		ft_error_str("raycast text->text mlx_new_image error", 12);//free_everything! Have to change this!!!!!!!
 	cub3d->text->address = mlx_get_data_addr(cub3d->text->text, &cub3d->text->bits_per_pixel, &cub3d->text->line_length, &cub3d->text->endian);
@@ -371,6 +371,6 @@ void	ft_raycast(t_cub3d *cub3d)
 	}
 	ft_gun_point(cub3d);
 	ft_minimap(cub3d);
-	mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->text->text, 0, 0);
+	mlx_put_image_to_window(cub3d->mptr, cub3d->mlx_window, cub3d->text->text, 0, 0);
 	ft_gun(cub3d);
 }

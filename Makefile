@@ -1,6 +1,6 @@
 NAME 		= cub3D
 CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror
+CFLAGS 		= -Wall -Wextra -Werror -fsanitize=address -g
 MLXFLAGS	= -L./minilibx -I./minilibx -lmlx -framework OpenGl -framework Appkit
 MLX_PATH	= ./minilibx
 
@@ -26,6 +26,8 @@ SRC			= cub3d.c	\
 			  parsing/GNL/get_next_line.c	\
 			  parsing/GNL/get_next_line_utils.c	\
 			  hook.c	\
+			  cub3d_utils.c	\
+			  cub3d_utils2.c	\
 			  bonus_utils.c
 
 

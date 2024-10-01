@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/01 18:26:52 by olmarech          #+#    #+#             */
+/*   Updated: 2024/10/01 18:40:32 by olmarech         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
+# define CUB3D_H
 
 # include "stdio.h"
 # include "stdlib.h"
@@ -77,7 +90,7 @@ typedef struct s_keypress
 
 typedef struct s_cub3d
 {
-	void	*mlx_ptr;
+	void	*mptr;
 	void	*mlx_window;
 	void	*ptr;
 	t_textures	*text;
@@ -87,6 +100,8 @@ typedef struct s_cub3d
 	t_time		time;
 
 	char	**map;
+	int		width;
+	int		height;
 	double	angle;
 	double	ch_posx;//changed positions
 	double	ch_posy;
@@ -154,8 +169,7 @@ typedef struct s_cub3d
 	char	*path_s;
 	char	*path_e;
 	char	*path_w;
-	void	*gun_text;
-	void	*fire_text;
+	void	*g_t;
 }				t_cub3d;
 
 typedef struct s_pars
@@ -170,12 +184,14 @@ typedef struct s_pars
 	char	orientation;
 	int		posx;
 	int		posy;
+	int		map_w;
+	int		map_h;
 }	t_pars;
 
 void	ft_raycast(t_cub3d *cub3d);
 void	ft_playerpos_int(t_cub3d *cub3d);
 void	ft_error_str(char *str, int x);
-void	flood_fill(char **map);
+void	flood_fill(t_pars *pars);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *s);
 char	**ft_split(char const *str, char const c);
@@ -207,5 +223,15 @@ void	free_tmp_exit(t_pars *pars, char **file, char *error_msg, char **t);
 int		check_duplicate(char **file_content, int i, t_pars *pars);
 int		good_size(char **buff);
 int		ft_handle_mouse_move(int x, int y, t_cub3d *cub3d);
+void	init_plane_dir(t_cub3d *cub3d, int dirx, double planex);
+void	init_cub(t_cub3d *cub3d, t_pars *pars);
+int		check_dot_cub(char *str);
+void	convert_rgb_hex_floor(t_cub3d *cub3d, t_pars *pars, int option);
+void	init_map_cub(t_cub3d *cub3d, t_pars *pars);
+void	free_tab(char **tab);
+void	free_cub(t_cub3d *cub3d);
+void	free_pars(t_pars *pars);
+int		close_free(t_cub3d *cub3d);
+void	ft_error_str(char *str, int x);
 
 #endif

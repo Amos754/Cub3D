@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 12:39:43 by olmarech          #+#    #+#             */
-/*   Updated: 2024/09/30 18:40:20 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:27:09 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	init_pars_all(char **file_content, t_pars *pars, char **buff)
 	init_map(file_content + 6, pars);
 	check_missing_info(pars);
 	free_tab(file_content);
-	flood_fill(pars->map);
+	flood_fill(pars);
 }
 
 void	parsing(t_pars *pars, char **av)

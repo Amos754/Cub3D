@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:55:14 by olmarech          #+#    #+#             */
-/*   Updated: 2024/09/30 17:51:12 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:24:31 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	init_pars(t_pars *pars)
 		pars->f_rgb[i] = -1;
 		i++;
 	}
+	pars->map_w = 0;
+	pars->map_h = 0;
 	pars->map = NULL;
 	pars->path_n = NULL;
 	pars->path_s = NULL;

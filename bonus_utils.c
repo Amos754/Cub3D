@@ -17,7 +17,7 @@ void	ft_mouse(t_cub3d *cub3d)
 
 void	ft_gun(t_cub3d *cub3d)
 {
-	mlx_put_image_to_window(cub3d->mlx_ptr, cub3d->mlx_window, cub3d->gun_text, 0, 0);
+	mlx_put_image_to_window(cub3d->mptr, cub3d->mlx_window, cub3d->g_t, 0, 0);
 }
 
 int	ft_handle_mouse_move(int x, int y, t_cub3d *cub3d)

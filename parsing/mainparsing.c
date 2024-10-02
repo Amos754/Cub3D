@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 12:39:43 by olmarech          #+#    #+#             */
-/*   Updated: 2024/10/01 17:27:09 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:15:22 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,22 @@ void	parse_texture(t_pars *pars, char **file_content)
 
 void	parse_cf_rgb(t_pars *pars, char **file_content)
 {
-	char	**tmp;
 	int		i;
+	char	**tmp;
 
 	i = -1;
 	while (file_content[++i])
 	{
 		if (!ft_strncmp(file_content[i], "F ", 2) && pars->f_rgb[0] == -1)
 		{
-			tmp = ft_split(file_content[i] + 2, ',');
+			tmp = good_tmp(pars, file_content, i);
 			if (size_tab(tmp) != 3)
 				free_tmp_exit(pars, file_content, "Bad RGB info.", tmp);
 			init_rgb(pars, tmp, 1, file_content);
 		}
 		else if (!ft_strncmp(file_content[i], "C ", 2) && pars->c_rgb[0] == -1)
 		{
-			tmp = ft_split(file_content[i] + 2, ',');
+			tmp = good_tmp(pars, file_content, i);
 			if (size_tab(tmp) != 3)
 				free_tmp_exit(pars, file_content, "Bad RGB info.", tmp);
 			init_rgb(pars, tmp, 0, file_content);
@@ -89,17 +89,6 @@ void	check_missing_info(t_pars *pars)
 				init_pars_orientation(pars, i, j);
 		}
 	}
-}
-
-void	init_map(char **file_content, t_pars *pars)
-{
-	int	i;
-
-	i = -1;
-	pars->map = malloc(sizeof(char *) * (size_tab(file_content) + 1));
-	while (file_content[++i])
-		pars->map[i] = ft_strdup(file_content[i]);
-	pars->map[i] = NULL;
 }
 
 void	init_pars_all(char **file_content, t_pars *pars, char **buff)

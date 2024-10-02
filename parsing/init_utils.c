@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 15:55:14 by olmarech          #+#    #+#             */
-/*   Updated: 2024/10/01 17:24:31 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:13:01 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 int	little_check(char **buff, int i, int k)
 {
-	// printf("K : %d\n\n\n\n", k);
 	if ((buff[i][k] == '1' || buff[i][k] == '0'
 		|| buff[i][k] == 'N' || buff[i][k] == 'S'
 		|| buff[i][k] == 'E' || buff[i][k] == 'W'
 		|| (buff[i][k] == ' ' && k > 0)) && k > 0)
-			if (buff[i][k - 1] >= 9 && buff[i][k - 1] <= 13)
-		return (1);
+		if (buff[i][k - 1] >= 9 && buff[i][k - 1] <= 13)
+			return (1);
 	return (0);
 }
 

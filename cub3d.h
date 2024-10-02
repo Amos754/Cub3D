@@ -6,7 +6,7 @@
 /*   By: olmarech <olmarech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 18:26:52 by olmarech          #+#    #+#             */
-/*   Updated: 2024/10/01 18:40:32 by olmarech         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:15:15 by olmarech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,5 +233,7 @@ void	free_cub(t_cub3d *cub3d);
 void	free_pars(t_pars *pars);
 int		close_free(t_cub3d *cub3d);
 void	ft_error_str(char *str, int x);
+char	**good_tmp(t_pars *pars, char **file_content, int index);
+void	init_map(char **file_content, t_pars *pars);
 
 #endif
